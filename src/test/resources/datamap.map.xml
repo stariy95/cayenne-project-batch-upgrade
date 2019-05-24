@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-map xmlns="http://cayenne.apache.org/schema/10/modelMap"
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://cayenne.apache.org/schema/10/modelMap http://cayenne.apache.org/schema/10/modelMap.xsd"
+	 project-version="10">
+	<property name="defaultPackage" value="aa"/>
+	<embeddable className="aa.bb.Embeddable"/>
+	<procedure name="procedure"/>
+	<db-entity name="artist" catalog="test">
+		<db-attribute name="age" type="INTEGER" length="10"/>
+		<db-attribute name="artistname" type="VARCHAR" length="45"/>
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
+	</db-entity>
+	<db-entity name="dept" catalog="test">
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="name" type="VARCHAR" length="45"/>
+	</db-entity>
+	<db-entity name="empl">
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="name" type="VARCHAR" length="45"/>
+	</db-entity>
+	<db-entity name="items" catalog="testdb">
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="item_descr" type="VARCHAR" length="200"/>
+		<db-attribute name="item_name" type="VARCHAR" length="45"/>
+	</db-entity>
+	<db-entity name="orders" catalog="testdb">
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="order_date" type="DATE" length="10"/>
+		<db-attribute name="order_status" type="VARCHAR" length="45"/>
+	</db-entity>
+	<db-entity name="orders_has_items" catalog="testdb">
+		<db-attribute name="items_id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="orders_id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
+	</db-entity>
+	<db-entity name="painting" catalog="testdb">
+		<db-attribute name="artist_id" type="INTEGER" isMandatory="true" length="10"/>
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="orders_id" type="INTEGER" isMandatory="true" length="10"/>
+		<db-attribute name="painting__name" type="VARCHAR" length="45"/>
+		<db-attribute name="paintingstyle" type="VARCHAR" length="45"/>
+	</db-entity>
+	<db-entity name="salary" catalog="testdb">
+		<db-attribute name="dept_id" type="INTEGER" isMandatory="true" length="10"/>
+		<db-attribute name="empl_id" type="INTEGER" isMandatory="true" length="10"/>
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="salary_amount" type="VARCHAR" length="45"/>
+	</db-entity>
+	<obj-entity name="Artist" className="aa.bb.Artist" dbEntityName="artist">
+		<obj-attribute name="age" type="int" db-attribute-path="age">
+			<info:property xmlns:info="http://cayenne.apache.org/schema/10/info" name="comment" value="age in years"/>
+		</obj-attribute>
+		<obj-attribute name="artistname" type="java.lang.String" db-attribute-path="artistname">
+			<info:property xmlns:info="http://cayenne.apache.org/schema/10/info" name="comment" value="@since 1.2"/>
+		</obj-attribute>
+		<pre-persist method-name="onPrePersist"/>
+		<post-load method-name="onPostLoad"/>
+		<info:property xmlns:info="http://cayenne.apache.org/schema/10/info" name="comment" value="Artist class for this demo"/>
+	</obj-entity>
+	<obj-entity name="Dept" className="aa.bb.Dept" dbEntityName="dept">
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+	</obj-entity>
+	<obj-entity name="Empl" className="aa.bb.Empl">
+		<obj-attribute name="name" type="java.lang.String"/>
+	</obj-entity>
+	<obj-entity name="Items" className="aa.bb.Items" dbEntityName="items">
+		<obj-attribute name="itemDescr" type="java.lang.String" db-attribute-path="item_descr"/>
+		<obj-attribute name="itemName" type="java.lang.String" db-attribute-path="item_name"/>
+	</obj-entity>
+	<obj-entity name="Orders" className="aa.bb.Orders" dbEntityName="orders">
+		<obj-attribute name="orderDate" type="java.time.LocalDate" db-attribute-path="order_date"/>
+		<obj-attribute name="orderStatus" type="java.lang.String" db-attribute-path="order_status"/>
+	</obj-entity>
+	<obj-entity name="Painting" className="aa.bb.Painting" dbEntityName="painting">
+		<obj-attribute name="paintingName" type="java.lang.String" db-attribute-path="painting__name"/>
+		<obj-attribute name="paintingstyle" type="java.lang.String" db-attribute-path="paintingstyle"/>
+	</obj-entity>
+	<obj-entity name="Salary" className="aa.bb.Salary" dbEntityName="salary">
+		<obj-attribute name="salaryAmount" type="java.lang.String" db-attribute-path="salary_amount"/>
+	</obj-entity>
+	<db-relationship name="paintings" source="artist" target="painting" toMany="true">
+		<db-attribute-pair source="id" target="artist_id"/>
+	</db-relationship>
+	<db-relationship name="salaries" source="dept" target="salary" toMany="true">
+		<db-attribute-pair source="id" target="dept_id"/>
+	</db-relationship>
+	<db-relationship name="salaries" source="empl" target="salary" toMany="true">
+		<db-attribute-pair source="id" target="empl_id"/>
+	</db-relationship>
+	<db-relationship name="ordersHasItemss" source="items" target="orders_has_items" toDependentPK="true" toMany="true">
+		<db-attribute-pair source="id" target="items_id"/>
+	</db-relationship>
+	<db-relationship name="ordersHasItems" source="orders" target="orders_has_items" toDependentPK="true" toMany="true">
+		<db-attribute-pair source="id" target="orders_id"/>
+	</db-relationship>
+	<db-relationship name="paintings" source="orders" target="painting" toMany="true">
+		<db-attribute-pair source="id" target="orders_id"/>
+	</db-relationship>
+	<db-relationship name="items" source="orders_has_items" target="items">
+		<db-attribute-pair source="items_id" target="id"/>
+	</db-relationship>
+	<db-relationship name="orders" source="orders_has_items" target="orders">
+		<db-attribute-pair source="orders_id" target="id"/>
+	</db-relationship>
+	<db-relationship name="artist" source="painting" target="artist">
+		<db-attribute-pair source="artist_id" target="id"/>
+	</db-relationship>
+	<db-relationship name="orders" source="painting" target="orders">
+		<db-attribute-pair source="orders_id" target="id"/>
+	</db-relationship>
+	<db-relationship name="dept" source="salary" target="dept">
+		<db-attribute-pair source="dept_id" target="id"/>
+	</db-relationship>
+	<db-relationship name="empl" source="salary" target="empl">
+		<db-attribute-pair source="empl_id" target="id"/>
+	</db-relationship>
+	<obj-relationship name="paintings" source="Artist" target="Painting" deleteRule="Deny" db-relationship-path="paintings">
+		<info:property xmlns:info="http://cayenne.apache.org/schema/10/info" name="comment" value="list of paintings linked to this artist"/>
+	</obj-relationship>
+	<obj-relationship name="salaries" source="Dept" target="Salary" deleteRule="Deny" db-relationship-path="salaries"/>
+	<obj-relationship name="salaries" source="Empl" target="Salary" deleteRule="Deny"/>
+	<obj-relationship name="orderss" source="Items" target="Orders" db-relationship-path="ordersHasItemss.orders"/>
+	<obj-relationship name="items" source="Orders" target="Items" db-relationship-path="ordersHasItems.items"/>
+	<obj-relationship name="paintings" source="Orders" target="Painting" deleteRule="Deny" db-relationship-path="paintings"/>
+	<obj-relationship name="artist" source="Painting" target="Artist" deleteRule="Nullify" db-relationship-path="artist"/>
+	<obj-relationship name="orders" source="Painting" target="Orders" deleteRule="Nullify" db-relationship-path="orders"/>
+	<obj-relationship name="dept" source="Salary" target="Dept" deleteRule="Nullify" db-relationship-path="dept"/>
+	<obj-relationship name="empl" source="Salary" target="Empl" deleteRule="Nullify"/>
+	<query name="ejbql_query" type="EJBQLQuery">
+		<property name="cayenne.GenericSelectQuery.pageSize" value="20"/>
+		<property name="comment" value="EJBQL"/>
+	</query>
+	<query name="procedure_query" type="ProcedureQuery" root="procedure" root-name="procedure">
+		<property name="cayenne.GenericSelectQuery.pageSize" value="20"/>
+		<property name="cayenne.ProcedureQuery.columnNameCapitalization" value="UPPER"/>
+		<property name="comment" value="PROCEDURE"/>
+	</query>
+	<query name="select_query" type="SelectQuery" root="obj-entity" root-name="Artist">
+		<property name="cayenne.GenericSelectQuery.pageSize" value="20"/>
+		<property name="cayenne.GenericSelectQuery.fetchOffset" value="0"/>
+		<property name="comment" value="Select query comment!"/>
+		<property name="cayenne.GenericSelectQuery.fetchingDataRows" value="false"/>
+		<ordering><![CDATA[age]]></ordering>
+		<ordering><![CDATA[paintings.artist.artistname]]></ordering>
+		<prefetch><![CDATA[paintings]]></prefetch>
+	</query>
+	<query name="sql_template_query" type="SQLTemplate" root="data-map" root-name="datamap">
+		<property name="cayenne.SQLTemplate.columnNameCapitalization" value="LOWER"/>
+		<property name="comment" value="SQL template query comment"/>
+		<property name="cayenne.GenericSelectQuery.fetchingDataRows" value="true"/>
+		<sql><![CDATA[select #bind(a, 'a') from `table` as t where a = 'b']]></sql>
+		<sql adapter-class="org.apache.cayenne.dba.db2.DB2Adapter"><![CDATA[select #bind(a, 'a') from `table` as t where a = 'b']]></sql>
+	</query>
+</data-map>
