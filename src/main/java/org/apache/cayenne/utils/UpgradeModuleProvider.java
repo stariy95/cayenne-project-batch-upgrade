@@ -1,12 +1,12 @@
 package org.apache.cayenne.utils;
 
-import com.google.inject.Module;
 import io.bootique.BQModuleProvider;
+import io.bootique.di.BQModule;
 
 public class UpgradeModuleProvider implements BQModuleProvider {
 
     @Override
-    public Module module() {
+    public BQModule module() {
         return new UpgradeModule();
     }
 

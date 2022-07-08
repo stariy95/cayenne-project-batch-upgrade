@@ -1,9 +1,9 @@
 package org.apache.cayenne.utils;
 
-import com.google.inject.Binder;
-import com.google.inject.Module;
-import com.google.inject.Provides;
 import io.bootique.BQCoreModule;
+import io.bootique.di.BQModule;
+import io.bootique.di.Binder;
+import io.bootique.di.Provides;
 import org.apache.cayenne.configuration.server.ServerModule;
 import org.apache.cayenne.configuration.xml.DataChannelMetaData;
 import org.apache.cayenne.configuration.xml.DefaultDataChannelMetaData;
@@ -15,7 +15,7 @@ import org.apache.cayenne.project.extension.ExtensionAwareHandlerFactory;
 import org.apache.cayenne.project.extension.info.InfoExtension;
 import org.apache.cayenne.tools.DefaultCgenService;
 
-public class UpgradeModule implements Module {
+public class UpgradeModule implements BQModule {
 
     @Override
     public void configure(Binder binder) {
