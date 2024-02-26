@@ -10,10 +10,10 @@ import org.slf4j.LoggerFactory;
 
 public class DefaultProjectFileLocator implements ProjectFileLocator {
 
-    private static Logger logger = LoggerFactory.getLogger(DefaultProjectFileLocator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultProjectFileLocator.class);
 
-    private final String DATA_MAP_EXT = ".map.xml";
-    
+    private static final String DATA_MAP_EXT = ".map.xml";
+
     @Override
     public Collection<File> find(File base, String fileExtension) {
         if(base.isDirectory()) {
@@ -35,12 +35,12 @@ public class DefaultProjectFileLocator implements ProjectFileLocator {
     }
 
     private Collection<File> findInDirectory(File dir, String fileExtension) {
-        logger.info("Searching in dir " + dir.getAbsolutePath());
+        LOGGER.info("Searching in dir " + dir.getAbsolutePath());
         File[] files = dir.listFiles(pathname -> match(pathname, fileExtension));
         if(files == null) {
             throw new RuntimeException("Unable to read directory: " + dir.getAbsolutePath());
         }
-        logger.info("Found {} files", files.length);
+        LOGGER.info("Found {} files", files.length);
         return Arrays.asList(files);
     }
 }

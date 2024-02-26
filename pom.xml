@@ -15,8 +15,8 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <cayenne.version>4.3.M1-SNAPSHOT</cayenne.version>
-        <bootique.version>2.0.1</bootique.version>
+        <cayenne.version>5.0-SNAPSHOT</cayenne.version>
+        <bootique.version>3.0.M2</bootique.version>
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
     </properties>

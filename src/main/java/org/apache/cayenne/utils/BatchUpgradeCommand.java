@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 public class BatchUpgradeCommand extends CommandWithMetadata {
 
-    private static Logger logger = LoggerFactory.getLogger(ProjectFileUpgrader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectFileUpgrader.class);
 
     @Inject
     private ProjectFileLocator fileLocator;
@@ -38,7 +38,7 @@ public class BatchUpgradeCommand extends CommandWithMetadata {
             return CommandOutcome.failed(1, "Invalid directory: " + baseDir);
         }
 
-        logger.info("Processing content for path: {}", baseDir.getAbsolutePath());
+        LOGGER.info("Processing content for path: {}", baseDir.getAbsolutePath());
 
         fileLocator.find(baseDir).forEach(fileUpgrader::upgrade);
 

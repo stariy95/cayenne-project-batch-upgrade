@@ -5,6 +5,7 @@ import java.nio.file.Paths;
 
 import javax.inject.Inject;
 
+import org.apache.cayenne.gen.ClassGenerationActionFactory;
 import org.apache.cayenne.utils.CgenService;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.di.Injector;
@@ -16,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 public class DefaultCgenService implements CgenService {
 
-    private static Logger logger = LoggerFactory.getLogger(DefaultCgenService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultCgenService.class);
 
     @Inject
     private Injector injector;
@@ -47,15 +48,19 @@ public class DefaultCgenService implements CgenService {
         config.setOverwrite(true);
         config.setRootPath(destDir.toPath());
         config.setCreatePKProperties(true);
-        config.setRelPath(Paths.get("."));
+        config.updateOutputPath(Paths.get("."));
 
+        return getClassGenerationAction(dataMap, config);
+    }
 
-        ClassGenerationAction generator = new ClassGenerationAction(config);
+    private ClassGenerationAction getClassGenerationAction(DataMap dataMap, CgenConfiguration config) {
+        ClassGenerationActionFactory factory = injector.getInstance(ClassGenerationActionFactory.class);
+        ClassGenerationAction generator = factory.createAction(config);
         injector.injectMembers(generator);
-        generator.setLogger(logger);
+        generator.setLogger(LOGGER);
         generator.addEntities(dataMap.getObjEntities());
         generator.addEmbeddables(dataMap.getEmbeddables());
-        generator.addQueries(dataMap.getQueryDescriptors());
+        generator.addDataMap(dataMap);
         return generator;
     }
 

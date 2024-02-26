@@ -12,10 +12,9 @@ import io.bootique.meta.application.OptionMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class BatchCgenCommand extends CommandWithMetadata {
 
-    private static Logger logger = LoggerFactory.getLogger(BatchCgenCommand.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BatchCgenCommand.class);
 
     @Inject
     private ProjectFileLocator fileLocator;

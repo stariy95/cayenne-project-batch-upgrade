@@ -16,19 +16,19 @@ import org.slf4j.LoggerFactory;
 
 public class DefaultProjectFileUpgrader implements ProjectFileUpgrader {
 
-    private static Logger logger = LoggerFactory.getLogger(ProjectFileUpgrader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectFileUpgrader.class);
 
     @Inject
     private Injector injector;
 
     @Override
     public void upgrade(File file) {
-        logger.info("Processing file {}", file.getName());
+        LOGGER.info("Processing file {}", file.getName());
         URL url;
         try{
             url = file.toURI().toURL();
         } catch (MalformedURLException ex) {
-            logger.warn("error", ex);
+            LOGGER.warn("error", ex);
             return;
         }
 
@@ -39,17 +39,17 @@ public class DefaultProjectFileUpgrader implements ProjectFileUpgrader {
 
         switch (md.getUpgradeType()) {
             case UPGRADE_NOT_NEEDED:
-                logger.info("\t\tupgrade not needed");
+                LOGGER.info("\t\tupgrade not needed");
                 return;
             case UPGRADE_NEEDED:
                 upgrader.upgradeProject(rootSource);
-                logger.info("\t\tupgrade done");
+                LOGGER.info("\t\tupgrade done");
                 break;
             case DOWNGRADE_NEEDED:
-                logger.warn("\t\tunable to upgrade, file has newer version");
+                LOGGER.warn("\t\tunable to upgrade, file has newer version");
                 break;
             case INTERMEDIATE_UPGRADE_NEEDED:
-                logger.warn("\t\tunable to upgrade, manual upgrade needed via older Modeler");
+                LOGGER.warn("\t\tunable to upgrade, manual upgrade needed via older Modeler");
                 break;
         }
     }
